@@ -11,3 +11,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#joke {
+  width: 90%;
+  height: 90%;
+  word-wrap: break-word;
+  margin-right: 1%;
+}
