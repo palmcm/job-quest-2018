@@ -7,8 +7,11 @@ const Page = () => {
     jokes:[],
     firstname:"Chatchart",
     lastname: "Sittipunt",
-    number: "2",
-    error:null
+    number: "1",
+    outputNumber:"1",
+    outputName: "Chatchart",
+    error:null,
+    isLoaded:null
   });
   const [count,setCount] = useState(0);
   const API_LINK ="https://api.icndb.com/jokes/random";
@@ -18,30 +21,36 @@ const Page = () => {
       .then(
           (result) =>
           {
-            setState({...state, jokes: result.value});
+            setState({...state, jokes: result.value,isLoaded:true});
           },
           (error) => 
           {
-            setState({...state,error:error})
+            setState({...state,error:error,isLoaded:true})
           }
       )}
   ,[count])
   const jokelist =state.jokes.map((joke)=>
   <li key={joke.id}>
-    {joke.joke}
+    {joke.joke.replace(/&quot;/g,'"')}
   </li>
 );
   if(state.error){
     return <div>Error: {state.error.message}</div>;
-  }
-  return(
+  } else if (!state.isLoaded) {
+    return <div>Loading...</div>;
+  }return(
     <div id="joke">
       <p>you click button {count} times</p>
-      <input type="text" value={state.number} onChange={(e) => setState({...state,number:e.target.value})}/>
-      <button onClick={() => {setCount(count+1)}}>
+      Firstname: <input type="text" value={state.firstname} onChange={(e) => setState({...state,firstname:e.target.value})}/><br/>
+      Lastname: <input type="text" value={state.lastname} onChange={(e) => setState({...state,lastname:e.target.value})}/><br/>
+      Number of jokes: <input type="number" value={state.number} onChange={(e) => setState({...state,number:e.target.value})}/>
+      <button onClick={() => {
+        setCount(count+1);
+        setState({...state,isLoaded:null,outputNumber:state.number,outputName:state.firstname})
+        }}>
         Click ME!!!
       </button>
-        <h1>{state.number}</h1>
+  <h1>Here is your {state.outputNumber} {state.outputName} joke{state.outputNumber>1 && "s"}</h1>
       <ul>
         {jokelist}
       </ul>
