@@ -43,7 +43,18 @@ const Page = () => {
       <p>you click button {count} times</p>
       Firstname: <input type="text" value={state.firstname} onChange={(e) => setState({...state,firstname:e.target.value})}/><br/>
       Lastname: <input type="text" value={state.lastname} onChange={(e) => setState({...state,lastname:e.target.value})}/><br/>
-      Number of jokes: <input type="number" value={state.number} onChange={(e) => setState({...state,number:e.target.value})}/>
+      Number of jokes: <input type="number" min="1" max="10" value={state.number} 
+      onChange={(e) => {
+        const num = e.target.value
+        if(num<=10 && num>0){
+          setState({...state,number:num});
+        }else if(num>10){
+          setState({...state,number:"10"});
+        }else{
+          setState({...state,number:"1"});
+        }
+      }
+      }/>
       <button onClick={() => {
         setCount(count+1);
         setState({...state,isLoaded:null,outputNumber:state.number,outputName:state.firstname})
